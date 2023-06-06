@@ -1,8 +1,5 @@
-<script>
-
-</script>
-
 <template>
+  <!-- <ClientOnly> -->
   <div class="container">
     <div class="header">
       <h3>{{ "Test from i-one web agency".toLocaleUpperCase() }}</h3>
@@ -11,22 +8,10 @@
       <Content />
     </div>
   </div>
+  <!-- </ClientOnly> -->
 </template>
 
 <style scoped>
-@keyframes animation {
-  from {
-    transition: translateY(100%);
-    transform: translateX(5%);
-    opacity: 0;
-  }
-
-  to {
-    transition: translateY(0%);
-    transform: translateX(0%);
-    opacity: 1;
-  }
-}
 
 .container {
   height: 1623px;
@@ -64,5 +49,20 @@
   text-align: center;
   font-size: 44px;
   color: white;
+}
+
+
+@keyframes animation {
+  from {
+    transition: translateY(100%);
+    transform: translateX(5%);
+    opacity: 0;
+  }
+
+  to {
+    transition: translateY(0%);
+    transform: translateX(0%);
+    opacity: 1;
+  }
 }
 </style>

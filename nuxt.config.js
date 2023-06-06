@@ -14,6 +14,9 @@ export default defineNuxtConfig({
         ital: [100]
       },
     }
+  },
+  proxy: {
+    '/api/': { target: 'https://api.example.com/', pathRewrite: {'^/api/': ''}, changeOrigin: true }
   }
   
 });

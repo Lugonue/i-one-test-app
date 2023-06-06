@@ -1,22 +1,18 @@
 <script setup>
-import { ref } from "vue";
 
 const randomComics = () => {
   return Math.floor(Math.random() * 2785);
 };
 
-const imgData = ref({});
-
-
-const { data } = await useAsyncData("content", () =>
-  $fetch(`https://xkcd.com/info.0.json`)
-);
-const dataInfo = ref(data.value);
-imgData.value = data.value;
-console.log(imgData.value.num, typeof imgData.value.num);
-const currentPage = ref(`/${imgData.value.num}`);
+let currentPage = ref("/1") ;
+let imgData = ref({
+  num: "",
+  img: "",
+  title: "",
+}) ;
 
 const fetchData = async (arg) => {
+  console.log(arg, currentPage.value);
   const index = currentPage.value.split("/")[1];
   switch (arg) {
     case "toStart":
@@ -26,44 +22,48 @@ const fetchData = async (arg) => {
       currentPage.value = `/${randomComics()}`;
       break;
     case "previous":
-      if (index == 1) return;
-      currentPage.value = `/${parseInt(index) - 1}`;
+      if (index === 1) return;
+      currentPage.value = `/${Number(index) - 1}`;
       break;
     case "next":
-      if (index == dataInfo.value.num) return;
-      currentPage.value = `/${parseInt(index) + 1}`;
+      if (index === imgData.value.num) return;
+      currentPage.value = `/${Number(index) + 1}`;
       break;
     case "toEnd":
-      currentPage.value = `/${dataInfo.value.num}`;
+      currentPage.value = `/${imgData.value.num}`;
       break;
     default:
       break;
   }
 
-  const url = `https://xkcd.com${currentPage.value}/info.0.json`;
-  const { data } = await useAsyncData("content", () => $fetch(url));
+  const uri = 'https://xkcd.com' + currentPage.value + '/info.0.json';
+
+  console.log(uri);
+
+  const { data } = await useFetch(uri);
 
   console.log(data.value);
-  imgData.value = data.value;
+
+  imgData.value = data.value ?? imgData.value;
+  return;
 };
 
-
+fetchData("toStart");
 
 </script>
 <template>
-
   <div class="title">
     {{ imgData.title }}
   </div>
   <NavBar @get-content="fetchData" />
   <div class="content-container">
     <div class="widget" v-if="currentPage">
-      {{ currentPage.slice(1) }} из {{ dataInfo.num }}
+      {{ currentPage.slice(1) }}
     </div>
+
     <img :src="imgData.img" :alt="imgData.title" />
   </div>
   <NavBar @get-content="fetchData" />
-
 </template>
 
 <style scoped>

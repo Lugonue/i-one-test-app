@@ -1,12 +1,4 @@
 <script>
-export default {
-    methods: {
-        submit() {
-            this.$emit('getContent');
-        }
-    }
-}
-
 
 </script>
 <template>
